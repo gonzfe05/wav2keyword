@@ -3,8 +3,8 @@
 # %% auto 0
 __all__ = ['foo']
 
-# %% ../00_core.ipynb 3
-def foo(bar: str, foobar: str) -> str:
+# %% ../00_core.ipynb 4
+def foo(bar: str, foobar: str, extra: str = 'c') -> str:
     """foobars the bar.
 
     Args:
