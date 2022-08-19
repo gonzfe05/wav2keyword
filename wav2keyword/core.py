@@ -4,4 +4,14 @@
 __all__ = ['foo']
 
 # %% ../00_core.ipynb 3
-def foo(): pass
+def foo(bar: str, foobar: str) -> str:
+    """foobars the bar.
+
+    Args:
+        bar (str): the bar.
+        foobar (str): the foobar.
+
+    Returns:
+        str: the foobar.
+    """
+    return 'foobar'
