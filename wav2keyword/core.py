@@ -10,6 +10,7 @@ def foo(bar: str, foobar: str, extra: str = 'c') -> str:
     Args:
         bar (str): the bar.
         foobar (str): the foobar.
+        extra (str): extra bar.
 
     Returns:
         str: the foobar.
