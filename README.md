@@ -1,2 +1,1 @@
-# wav2keyword
-wav2vec keyword spotter
+This file will be overwritten by `index.ipynb`
