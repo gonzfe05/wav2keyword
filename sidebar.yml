@@ -5,3 +5,4 @@ website:
       - 00_datasets.ipynb
       - 01_preprocesses.ipynb
       - 02_training.ipynb
+      - 03_inference.ipynb
