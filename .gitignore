@@ -150,3 +150,5 @@ checklink/cookies.txt
 .quarto
 
 /.quarto/
+
+wav2vec2-base-finetuned-ks/
