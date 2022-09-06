@@ -150,3 +150,22 @@ checklink/cookies.txt
 .quarto
 
 /.quarto/
+
+wav2vec2-base-finetuned-ks/
+wav2vec2-base-finetuned-xvector/
+
+data/panda/chow_mein_model
+data/panda/dataset
+data/panda/embeddings
+data/panda/embeddings_base
+data/panda/embeddings_superb_sv
+data/panda/lightning_logs
+data/panda/misses
+data/panda/output
+data/panda/Panda_Express_Transcripts
+data/panda/pd-112705
+data/panda/Panda_Express_Transcripts.zip
+data/panda/pd-112705.zip
+data/panda/selected.zip
+data/panda/results
+data/panda/tags_data.json
