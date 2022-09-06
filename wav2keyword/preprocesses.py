@@ -9,7 +9,7 @@ from nbdev.showdoc import *
 from IPython.display import display,SVG
 from transformers import AutoFeatureExtractor
 from datasets.dataset_dict import DatasetDict
-from .datasets import dataloader_pipeline
+from .datasets_tools import dataloader_pipeline
 
 # %% ../01_preprocesses.ipynb 6
 class Preprocessor(object):

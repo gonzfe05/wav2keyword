@@ -11,7 +11,7 @@ import numpy as np
 from transformers import AutoModelForAudioClassification, TrainingArguments, Trainer
 from datasets import load_metric
 from datasets.dataset_dict import DatasetDict
-from .datasets import dataloader_pipeline
+from .datasets_tools import dataloader_pipeline
 from .preprocesses import Preprocessor
 
 # %% ../02_training.ipynb 6
