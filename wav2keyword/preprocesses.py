@@ -14,12 +14,11 @@ from .datasets import dataloader_pipeline
 # %% ../01_preprocesses.ipynb 6
 class Preprocessor(object):
 
-    def __init__(self, model_checkpoint: str = "facebook/wav2vec2-base", max_duration: float = 1.0):
+    def __init__(self, model_checkpoint: str = "facebook/wav2vec2-base"):
         self.model_checkpoint = model_checkpoint
-        self.max_duration = max_duration
         self.FEATURE_EXTRACTOR = AutoFeatureExtractor.from_pretrained(model_checkpoint)
 
-    def _preprocess_function(self, examples: List[dict]):
+    def _preprocess_function(self, examples: List[dict], max_duration: float = 1.0, padding: bool = False):
         """Runs the feature_extractor for the given checkpoint with max_duration.
 
         Args:
@@ -32,11 +31,12 @@ class Preprocessor(object):
         inputs = self.FEATURE_EXTRACTOR(
             audio_arrays, 
             sampling_rate=self.FEATURE_EXTRACTOR.sampling_rate, 
-            max_length=int(self.FEATURE_EXTRACTOR.sampling_rate * self.max_duration), 
+            max_length=int(self.FEATURE_EXTRACTOR.sampling_rate * max_duration), 
             truncation=True,
+            padding=padding
         )
         return inputs
 
-    def preprocess(self, dataset: DatasetDict):
-        return dataset.map(self._preprocess_function, remove_columns=["audio", "file"], batched=True)
+    def preprocess(self, dataset: DatasetDict, fn_kwargs: dict = None):
+        return dataset.map(self._preprocess_function, remove_columns=["audio", "file"], batched=True, fn_kwargs=fn_kwargs)
 

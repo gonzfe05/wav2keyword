@@ -53,7 +53,7 @@ class W2KTrainer(object):
     def get_training_args(self, training_kwargs = None):
         training_args = self.training_args.copy()
         if training_kwargs:
-            for k, v in training_kwargs:
+            for k, v in training_kwargs.items():
                 training_args[k] = v
 
         args = TrainingArguments(
@@ -66,8 +66,8 @@ class W2KTrainer(object):
         predictions = np.argmax(eval_pred.predictions, axis=1)
         return self.metric.compute(predictions=predictions, references=eval_pred.label_ids)
 
-    def build_trainer(self, dataset, id2label, label2id, args = None):
-        encoded_dataset = self.preprocessor.preprocess(dataset)
+    def build_trainer(self, dataset, id2label, label2id, args = None, preprocess_kwargs: dict = {'max_duration': 1.0}):
+        encoded_dataset = self.preprocessor.preprocess(dataset, fn_kwargs = preprocess_kwargs)
         trainer = Trainer(
             self._get_model(id2label, label2id),
             self.get_training_args(args),
