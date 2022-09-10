@@ -1,0 +1,1482 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.1.189">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>wav2keyword – vectorx</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+<script src="https://unpkg.com/@jupyter-widgets/html-manager@*/dist/embed-amd.js" crossorigin="anonymous"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">wav2keyword</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/gonzfe05/wav2keyword"><i class="bi bi-github" role="img">
+</i> 
+ </a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">(Untitled)</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">wav2keyword</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../core.html" class="sidebar-item-text sidebar-link">wav2vec</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../datasets_tools.html" class="sidebar-item-text sidebar-link">Datasets pipeline</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preprocesses.html" class="sidebar-item-text sidebar-link">preprocesses</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../training.html" class="sidebar-item-text sidebar-link">training</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../05_one_vs_rest.html" class="sidebar-item-text sidebar-link">Wav2vec2 one vs rest classification</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../06_embeddings_distance.html" class="sidebar-item-text sidebar-link">Wav2vec2 embeddings distance</a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../07_audio_processor.html" class="sidebar-item-text sidebar-link">07_audio_processor.html</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset, Features, Value, Audio, ClassLabel</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>paths <span class="op">=</span> pd.read_csv(<span class="st">'dataset/slices_train.csv'</span>).path.values</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [Path(p).name.split(<span class="st">'_'</span>)[<span class="dv">0</span>] <span class="cf">for</span> p <span class="kw">in</span> paths]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> Counter(labels)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>labels <span class="op">=</span> [l <span class="cf">for</span> l <span class="kw">in</span> labels <span class="cf">if</span> n[l] <span class="op">&gt;</span> <span class="dv">20</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>label2id <span class="op">=</span> {l: ix  <span class="cf">for</span> ix, l <span class="kw">in</span> <span class="bu">enumerate</span>(<span class="bu">set</span>(labels))}</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>label2id[<span class="st">'unk'</span>] <span class="op">=</span> <span class="bu">max</span>(i <span class="cf">for</span> i <span class="kw">in</span> label2id.values()) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>id2label <span class="op">=</span> {ix: l <span class="cf">for</span> l, ix <span class="kw">in</span> label2id.items()}</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> <span class="bu">sorted</span>([(n, i) <span class="cf">for</span> n, i <span class="kw">in</span> label2id.items()], key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">1</span>])</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>names <span class="op">=</span> [n <span class="cf">for</span> n, i <span class="kw">in</span> names]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<!-- WARNING: THIS FILE WAS AUTOGENERATED! DO NOT EDIT! -->
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>feats <span class="op">=</span> Features({<span class="st">"path"</span>: Value(<span class="st">"string"</span>),</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"audio"</span>: Audio(sampling_rate<span class="op">=</span><span class="dv">16_000</span>),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                  <span class="st">"label"</span>: ClassLabel(names<span class="op">=</span>names)}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                  )</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> _generate_examples(example, label2id: <span class="bu">dict</span> <span class="op">=</span> label2id):</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>        label <span class="op">=</span> Path(example[<span class="st">'path'</span>]).name.split(<span class="st">'_'</span>)[<span class="dv">0</span>]</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>        example[<span class="st">'label'</span>] <span class="op">=</span> label2id.get(label, label2id[<span class="st">'unk'</span>])</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>        example[<span class="st">'audio'</span>] <span class="op">=</span> example[<span class="st">'path'</span>]</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> example</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> <span class="bu">open</span>(<span class="st">'tags_data.json'</span>, <span class="st">'r'</span>) <span class="im">as</span> f:</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    data <span class="op">=</span> json.load(f)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>data_files <span class="op">=</span> {<span class="st">'train'</span>: <span class="st">'dataset/slices_train.csv'</span>, <span class="st">'test'</span>: <span class="st">'dataset/slices_test.csv'</span>, <span class="st">'val'</span>: <span class="st">'dataset/slices_val.csv'</span>}</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> load_dataset(<span class="st">"csv"</span>, data_files<span class="op">=</span>data_files)</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> dataset.remove_columns(column_names<span class="op">=</span>[<span class="st">'Unnamed: 0'</span>, <span class="st">'split'</span>])</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> dataset.<span class="bu">map</span>(_generate_examples, features<span class="op">=</span>feats)</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>dataset <span class="op">=</span> dataset.rename_column(<span class="st">'path'</span>, <span class="st">'file'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Using custom data configuration default-c58ed15a5d5a3dac
+Reusing dataset csv (/home/jovyan/.cache/huggingface/datasets/csv/default-c58ed15a5d5a3dac/0.0.0/652c3096f041ee27b04d2232d41f10547a8fecda3e284a79a0ec4053c916ef7a)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"8453a56b69794d02bae6ce4ce0cf9c04","version_major":2,"version_minor":0}]
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"c517883f7a50493b93c067ea7eb0dbe3","version_major":2,"version_minor":0}]
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"f6221e339ea44e58907310e5d5f5f4c9","version_major":2,"version_minor":0}]
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"562b30103e8b434d92a1300e20ff6cda","version_major":2,"version_minor":0}]
+</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> AutoFeatureExtractor</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> transformers <span class="im">import</span> Wav2Vec2ForXVector, TrainingArguments, Trainer</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datasets <span class="im">import</span> load_dataset, load_metric</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>model_checkpoint <span class="op">=</span> <span class="st">"facebook/wav2vec2-base"</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>batch_size <span class="op">=</span> <span class="dv">32</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>max_duration <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>feature_extractor <span class="op">=</span> AutoFeatureExtractor.from_pretrained(model_checkpoint)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> preprocess_function(examples):</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>    audio_arrays <span class="op">=</span> [x[<span class="st">"array"</span>] <span class="cf">for</span> x <span class="kw">in</span> examples[<span class="st">"audio"</span>]]</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>    inputs <span class="op">=</span> feature_extractor(</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>        audio_arrays, </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>        sampling_rate<span class="op">=</span>feature_extractor.sampling_rate, </span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>        max_length<span class="op">=</span><span class="bu">int</span>(feature_extractor.sampling_rate <span class="op">*</span> max_duration), </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>        truncation<span class="op">=</span><span class="va">True</span>, </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> inputs</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>encoded_dataset <span class="op">=</span> dataset.<span class="bu">map</span>(preprocess_function, remove_columns<span class="op">=</span>[<span class="st">"audio"</span>, <span class="st">"file"</span>], batched<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/transformers/configuration_utils.py:368: UserWarning: Passing `gradient_checkpointing` to a config initialization is deprecated and will be removed in v5 Transformers. Using `model.gradient_checkpointing_enable()` instead, or if you are using the `Trainer` API, pass `gradient_checkpointing=True` in your `TrainingArguments`.
+  warnings.warn(</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"edfd7894abfa4b55b9ba1c08cd1d4e69","version_major":2,"version_minor":0}]
+</script>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/transformers/feature_extraction_utils.py:168: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  tensor = as_tensor(value)</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"9a026606f0054197b7eb144e119e9e04","version_major":2,"version_minor":0}]
+</script>
+</div>
+<div class="cell-output cell-output-display">
+<script type="application/vnd.jupyter.widget-view+json">
+[{"model_id":"dc23e21dc71b45b7b356301311b9c903","version_major":2,"version_minor":0}]
+</script>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>num_labels <span class="op">=</span> <span class="bu">len</span>(id2label)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> Wav2Vec2ForXVector.from_pretrained(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    model_checkpoint, </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    num_labels<span class="op">=</span>num_labels,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    label2id<span class="op">=</span>label2id,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    id2label<span class="op">=</span>id2label,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>model_name <span class="op">=</span> model_checkpoint.split(<span class="st">"/"</span>)[<span class="op">-</span><span class="dv">1</span>]</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>args <span class="op">=</span> TrainingArguments(</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">-finetuned-xvector"</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    evaluation_strategy <span class="op">=</span> <span class="st">"epoch"</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    save_strategy <span class="op">=</span> <span class="st">"epoch"</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    learning_rate<span class="op">=</span><span class="fl">3e-5</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    per_device_train_batch_size<span class="op">=</span>batch_size,</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    gradient_accumulation_steps<span class="op">=</span><span class="dv">4</span>,</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    per_device_eval_batch_size<span class="op">=</span>batch_size,</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    num_train_epochs<span class="op">=</span><span class="dv">35</span>,</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    warmup_ratio<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    logging_steps<span class="op">=</span><span class="dv">10</span>,</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    load_best_model_at_end<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    metric_for_best_model<span class="op">=</span><span class="st">"f1"</span>,</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    push_to_hub<span class="op">=</span><span class="va">False</span>,</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/transformers/configuration_utils.py:368: UserWarning: Passing `gradient_checkpointing` to a config initialization is deprecated and will be removed in v5 Transformers. Using `model.gradient_checkpointing_enable()` instead, or if you are using the `Trainer` API, pass `gradient_checkpointing=True` in your `TrainingArguments`.
+  warnings.warn(
+Some weights of the model checkpoint at facebook/wav2vec2-base were not used when initializing Wav2Vec2ForXVector: ['quantizer.weight_proj.bias', 'project_hid.weight', 'quantizer.codevectors', 'project_q.weight', 'project_q.bias', 'project_hid.bias', 'quantizer.weight_proj.weight']
+- This IS expected if you are initializing Wav2Vec2ForXVector from the checkpoint of a model trained on another task or with another architecture (e.g. initializing a BertForSequenceClassification model from a BertForPreTraining model).
+- This IS NOT expected if you are initializing Wav2Vec2ForXVector from the checkpoint of a model that you expect to be exactly identical (initializing a BertForSequenceClassification model from a BertForSequenceClassification model).
+Some weights of Wav2Vec2ForXVector were not initialized from the model checkpoint at facebook/wav2vec2-base and are newly initialized: ['tdnn.0.kernel.weight', 'tdnn.3.kernel.bias', 'feature_extractor.weight', 'objective.weight', 'feature_extractor.bias', 'tdnn.0.kernel.bias', 'tdnn.4.kernel.weight', 'tdnn.3.kernel.weight', 'classifier.weight', 'tdnn.1.kernel.bias', 'tdnn.1.kernel.weight', 'tdnn.2.kernel.weight', 'tdnn.4.kernel.bias', 'projector.bias', 'projector.weight', 'classifier.bias', 'tdnn.2.kernel.bias']
+You should probably TRAIN this model on a down-stream task to be able to use it for predictions and inference.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>metric <span class="op">=</span> load_metric(<span class="st">"f1"</span>, cache_dir<span class="op">=</span><span class="st">'/home/jovyan/.cache/huggingface/metrics'</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>metric</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>Metric(name: "f1", features: {'predictions': Value(dtype='int32', id=None), 'references': Value(dtype='int32', id=None)}, usage: """
+Args:
+    predictions (`list` of `int`): Predicted labels.
+    references (`list` of `int`): Ground truth labels.
+    labels (`list` of `int`): The set of labels to include when `average` is not set to `'binary'`, and the order of the labels if `average` is `None`. Labels present in the data can be excluded, for example to calculate a multiclass average ignoring a majority negative class. Labels not present in the data will result in 0 components in a macro average. For multilabel targets, labels are column indices. By default, all labels in `predictions` and `references` are used in sorted order. Defaults to None.
+    pos_label (`int`): The class to be considered the positive class, in the case where `average` is set to `binary`. Defaults to 1.
+    average (`string`): This parameter is required for multiclass/multilabel targets. If set to `None`, the scores for each class are returned. Otherwise, this determines the type of averaging performed on the data. Defaults to `'binary'`.
+
+        - 'binary': Only report results for the class specified by `pos_label`. This is applicable only if the classes found in `predictions` and `references` are binary.
+        - 'micro': Calculate metrics globally by counting the total true positives, false negatives and false positives.
+        - 'macro': Calculate metrics for each label, and find their unweighted mean. This does not take label imbalance into account.
+        - 'weighted': Calculate metrics for each label, and find their average weighted by support (the number of true instances for each label). This alters `'macro'` to account for label imbalance. This option can result in an F-score that is not between precision and recall.
+        - 'samples': Calculate metrics for each instance, and find their average (only meaningful for multilabel classification).
+    sample_weight (`list` of `float`): Sample weights Defaults to None.
+
+Returns:
+    f1 (`float` or `array` of `float`): F1 score or list of f1 scores, depending on the value passed to `average`. Minimum possible value is 0. Maximum possible value is 1. Higher f1 scores are better.
+
+Examples:
+
+    Example 1-A simple binary example
+        &gt;&gt;&gt; f1_metric = datasets.load_metric("f1")
+        &gt;&gt;&gt; results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0])
+        &gt;&gt;&gt; print(results)
+        {'f1': 0.5}
+
+    Example 2-The same simple binary example as in Example 1, but with `pos_label` set to `0`.
+        &gt;&gt;&gt; f1_metric = datasets.load_metric("f1")
+        &gt;&gt;&gt; results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], pos_label=0)
+        &gt;&gt;&gt; print(round(results['f1'], 2))
+        0.67
+
+    Example 3-The same simple binary example as in Example 1, but with `sample_weight` included.
+        &gt;&gt;&gt; f1_metric = datasets.load_metric("f1")
+        &gt;&gt;&gt; results = f1_metric.compute(references=[0, 1, 0, 1, 0], predictions=[0, 0, 1, 1, 0], sample_weight=[0.9, 0.5, 3.9, 1.2, 0.3])
+        &gt;&gt;&gt; print(round(results['f1'], 2))
+        0.35
+
+    Example 4-A multiclass example, with different values for the `average` input.
+        &gt;&gt;&gt; predictions = [0, 2, 1, 0, 0, 1]
+        &gt;&gt;&gt; references = [0, 1, 2, 0, 1, 2]
+        &gt;&gt;&gt; results = f1_metric.compute(predictions=predictions, references=references, average="macro")
+        &gt;&gt;&gt; print(round(results['f1'], 2))
+        0.27
+        &gt;&gt;&gt; results = f1_metric.compute(predictions=predictions, references=references, average="micro")
+        &gt;&gt;&gt; print(round(results['f1'], 2))
+        0.33
+        &gt;&gt;&gt; results = f1_metric.compute(predictions=predictions, references=references, average="weighted")
+        &gt;&gt;&gt; print(round(results['f1'], 2))
+        0.27
+        &gt;&gt;&gt; results = f1_metric.compute(predictions=predictions, references=references, average=None)
+        &gt;&gt;&gt; print(results)
+        {'f1': array([0.8, 0. , 0. ])}
+""", stored examples: 0)</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> torch</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> torch <span class="im">import</span> nn</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> compute_metrics(eval_pred):</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""Computes accuracy on a batch of predictions"""</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>    logits <span class="op">=</span> eval_pred.predictions[<span class="dv">0</span>]</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    proj <span class="op">=</span> model.objective._parameters[<span class="st">'weight'</span>].cpu().detach().numpy()</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>    predicted_labels <span class="op">=</span> np.argmax(np.dot(logits, proj), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>    res <span class="op">=</span> metric.compute(predictions<span class="op">=</span>predicted_labels, references<span class="op">=</span>eval_pred.label_ids, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(res)</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> res</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>trainer <span class="op">=</span> Trainer(</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    model,</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    args,</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    train_dataset<span class="op">=</span>encoded_dataset[<span class="st">'train'</span>],</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    eval_dataset<span class="op">=</span>encoded_dataset[<span class="st">"val"</span>],</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    tokenizer<span class="op">=</span>feature_extractor,</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    compute_metrics<span class="op">=</span>compute_metrics</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>trainer.train()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/conda/lib/python3.10/site-packages/transformers/optimization.py:306: FutureWarning: This implementation of AdamW is deprecated and will be removed in a future version. Use the PyTorch implementation torch.optim.AdamW instead, or set `no_deprecation_warning=True` to disable this warning
+  warnings.warn(
+***** Running training *****
+  Num examples = 36993
+  Num Epochs = 35
+  Instantaneous batch size per device = 32
+  Total train batch size (w. parallel, distributed &amp; accumulation) = 128
+  Gradient Accumulation steps = 4
+  Total optimization steps = 10115</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+
+    <div>
+      
+      <progress value="10115" max="10115" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      [10115/10115 6:58:41, Epoch 34/35]
+    </div>
+    <table class="dataframe table table-sm table-striped">
+  <thead>
+ <tr>
+      <th>Epoch</th>
+      <th>Training Loss</th>
+      <th>Validation Loss</th>
+      <th>F1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>0</td>
+      <td>9.972000</td>
+      <td>9.282754</td>
+      <td>0.494746</td>
+    </tr>
+    <tr>
+      <td>1</td>
+      <td>7.730100</td>
+      <td>6.484269</td>
+      <td>0.689371</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>5.968000</td>
+      <td>4.822059</td>
+      <td>0.795504</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>5.182500</td>
+      <td>3.685891</td>
+      <td>0.832956</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>4.352900</td>
+      <td>3.038280</td>
+      <td>0.865561</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>3.857300</td>
+      <td>2.449143</td>
+      <td>0.896701</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>2.967500</td>
+      <td>2.071967</td>
+      <td>0.909700</td>
+    </tr>
+    <tr>
+      <td>7</td>
+      <td>3.039100</td>
+      <td>1.890948</td>
+      <td>0.914620</td>
+    </tr>
+    <tr>
+      <td>8</td>
+      <td>2.665400</td>
+      <td>1.711604</td>
+      <td>0.927954</td>
+    </tr>
+    <tr>
+      <td>9</td>
+      <td>2.360600</td>
+      <td>1.603896</td>
+      <td>0.932025</td>
+    </tr>
+    <tr>
+      <td>10</td>
+      <td>2.303300</td>
+      <td>1.562655</td>
+      <td>0.936823</td>
+    </tr>
+    <tr>
+      <td>11</td>
+      <td>2.261800</td>
+      <td>1.522344</td>
+      <td>0.936481</td>
+    </tr>
+    <tr>
+      <td>12</td>
+      <td>1.766600</td>
+      <td>1.525429</td>
+      <td>0.938809</td>
+    </tr>
+    <tr>
+      <td>13</td>
+      <td>1.663100</td>
+      <td>1.264167</td>
+      <td>0.948110</td>
+    </tr>
+    <tr>
+      <td>14</td>
+      <td>1.854700</td>
+      <td>1.188033</td>
+      <td>0.953547</td>
+    </tr>
+    <tr>
+      <td>15</td>
+      <td>1.729100</td>
+      <td>1.124112</td>
+      <td>0.956645</td>
+    </tr>
+    <tr>
+      <td>16</td>
+      <td>1.399600</td>
+      <td>1.002161</td>
+      <td>0.960203</td>
+    </tr>
+    <tr>
+      <td>17</td>
+      <td>1.354000</td>
+      <td>0.957133</td>
+      <td>0.960323</td>
+    </tr>
+    <tr>
+      <td>18</td>
+      <td>1.482800</td>
+      <td>0.940949</td>
+      <td>0.964454</td>
+    </tr>
+    <tr>
+      <td>19</td>
+      <td>1.262700</td>
+      <td>0.937568</td>
+      <td>0.964595</td>
+    </tr>
+    <tr>
+      <td>20</td>
+      <td>1.270600</td>
+      <td>0.899725</td>
+      <td>0.964520</td>
+    </tr>
+    <tr>
+      <td>21</td>
+      <td>1.222900</td>
+      <td>0.820089</td>
+      <td>0.969124</td>
+    </tr>
+    <tr>
+      <td>22</td>
+      <td>0.948800</td>
+      <td>0.863048</td>
+      <td>0.966118</td>
+    </tr>
+    <tr>
+      <td>23</td>
+      <td>0.975500</td>
+      <td>0.852564</td>
+      <td>0.966520</td>
+    </tr>
+    <tr>
+      <td>24</td>
+      <td>0.817600</td>
+      <td>0.781341</td>
+      <td>0.971060</td>
+    </tr>
+    <tr>
+      <td>25</td>
+      <td>0.927600</td>
+      <td>0.751091</td>
+      <td>0.971370</td>
+    </tr>
+    <tr>
+      <td>26</td>
+      <td>0.967400</td>
+      <td>0.775151</td>
+      <td>0.970824</td>
+    </tr>
+    <tr>
+      <td>27</td>
+      <td>0.888000</td>
+      <td>0.725526</td>
+      <td>0.974405</td>
+    </tr>
+    <tr>
+      <td>28</td>
+      <td>0.750600</td>
+      <td>0.725868</td>
+      <td>0.972901</td>
+    </tr>
+    <tr>
+      <td>29</td>
+      <td>0.806300</td>
+      <td>0.701442</td>
+      <td>0.972335</td>
+    </tr>
+    <tr>
+      <td>30</td>
+      <td>0.798500</td>
+      <td>0.698346</td>
+      <td>0.973509</td>
+    </tr>
+    <tr>
+      <td>31</td>
+      <td>0.663300</td>
+      <td>0.702570</td>
+      <td>0.974114</td>
+    </tr>
+    <tr>
+      <td>32</td>
+      <td>0.644100</td>
+      <td>0.699597</td>
+      <td>0.973188</td>
+    </tr>
+    <tr>
+      <td>33</td>
+      <td>0.736900</td>
+      <td>0.693265</td>
+      <td>0.973221</td>
+    </tr>
+    <tr>
+      <td>34</td>
+      <td>0.690700</td>
+      <td>0.686031</td>
+      <td>0.972811</td>
+    </tr>
+  </tbody>
+</table><p>
+</p></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.49474644990778804}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-289
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-289/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-289/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-289/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.6893705687016398}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-578
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-578/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-578/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-578/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.7955035044782507}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-867
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-867/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-867/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-867/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.8329559775436511}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-1156
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-1156/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-1156/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-1156/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.865561052739612}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-1445
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-1445/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-1445/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-1445/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.8967009390545976}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-1734
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-1734/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-1734/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-1734/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9097000463410372}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-2023
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-2023/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-2023/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-2023/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9146199620187198}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-2312
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-2312/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-2312/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-2312/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9279538241747127}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-2601
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-2601/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-2601/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-2601/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9320251208426955}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-2890
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-2890/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-2890/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-2890/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9368229765369066}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-3179
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-3179/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-3179/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-3179/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9364810793693422}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-3468
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-3468/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-3468/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-3468/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9388092404231434}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-3757
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-3757/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-3757/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-3757/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9481100323068246}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-4046
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-4046/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-4046/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-4046/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9535473362353735}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-4335
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-4335/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-4335/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-4335/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9566449639826673}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-4624
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-4624/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-4624/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-4624/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9602031926260322}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-4913
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-4913/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-4913/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-4913/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9603232290773355}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-5202
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-5202/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-5202/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-5202/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9644543911689891}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-5491
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-5491/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-5491/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-5491/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9645954077460133}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-5780
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-5780/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-5780/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-5780/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9645197916695856}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-6069
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-6069/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-6069/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-6069/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9691239255185394}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-6358
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-6358/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-6358/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-6358/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9661176529231834}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-6647
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-6647/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-6647/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-6647/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9665197187638916}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-6936
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-6936/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-6936/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-6936/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9710602936387585}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-7225
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-7225/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-7225/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-7225/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9713701299682312}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-7514
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-7514/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-7514/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-7514/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9708238623533595}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-7803
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-7803/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-7803/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-7803/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9744048074888573}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-8092
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-8092/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-8092/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-8092/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.972901115518863}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-8381
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-8381/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-8381/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-8381/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9723351189232675}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-8670
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-8670/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-8670/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-8670/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9735086360418925}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-8959
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-8959/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-8959/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-8959/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9741139097461785}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-9248
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-9248/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-9248/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-9248/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9731876791817936}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-9537
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-9537/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-9537/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-9537/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9732213803231736}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-9826
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-9826/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-9826/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-9826/preprocessor_config.json
+***** Running Evaluation *****
+  Num examples = 4586
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9728109377883826}</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/checkpoint-10115
+Configuration saved in wav2vec2-base-finetuned-xvector/checkpoint-10115/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/checkpoint-10115/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/checkpoint-10115/preprocessor_config.json
+
+
+Training completed. Do not forget to share your model on huggingface.co/models =)
+
+
+Loading best model from wav2vec2-base-finetuned-xvector/checkpoint-8092 (score: 0.9744048074888573).</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>TrainOutput(global_step=10115, training_loss=2.4172881723452013, metrics={'train_runtime': 25124.955, 'train_samples_per_second': 51.533, 'train_steps_per_second': 0.403, 'total_flos': 1.2024582268257595e+19, 'train_loss': 2.4172881723452013, 'epoch': 35.0})</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>trainer.save_model(<span class="ss">f"</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">-finetuned-xvector/best_checkpoint"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Saving model checkpoint to wav2vec2-base-finetuned-xvector/best_checkpoint
+Configuration saved in wav2vec2-base-finetuned-xvector/best_checkpoint/config.json
+Model weights saved in wav2vec2-base-finetuned-xvector/best_checkpoint/pytorch_model.bin
+Feature extractor saved in wav2vec2-base-finetuned-xvector/best_checkpoint/preprocessor_config.json</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>trainer._load_from_checkpoint(<span class="ss">f"</span><span class="sc">{</span>model_name<span class="sc">}</span><span class="ss">-finetuned-xvector/best_checkpoint"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading model from wav2vec2-base-finetuned-xvector/best_checkpoint.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>inputs <span class="op">=</span> encoded_dataset[<span class="st">'test'</span>]</span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> torch.no_grad():</span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>        result <span class="op">=</span> trainer.predict(test_dataset <span class="op">=</span> inputs)</span>
+<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>result.metrics</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>***** Running Prediction *****
+  Num examples = 4648
+  Batch size = 32</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{'f1': 0.9685338664124005}</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>{'test_loss': 0.8347758054733276,
+ 'test_f1': 0.9685338664124005,
+ 'test_runtime': 37.9534,
+ 'test_samples_per_second': 122.466,
+ 'test_steps_per_second': 3.847}</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> collections <span class="im">import</span> Counter</span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> get_predicted_labels(logits):</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a>    proj <span class="op">=</span> model.objective._parameters[<span class="st">'weight'</span>].cpu().detach().numpy()</span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.argmax(np.dot(logits, proj), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a>predicted_labels <span class="op">=</span> get_predicted_labels(result.predictions[<span class="dv">0</span>])</span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>hits <span class="op">=</span> [(t, p<span class="op">==</span>t) <span class="cf">for</span> p, t <span class="kw">in</span> <span class="bu">zip</span>(predicted_labels, result.label_ids)]</span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a>per_label_acc <span class="op">=</span> {}</span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> l, h <span class="kw">in</span> hits:</span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> h:</span>
+<span id="cb95-12"><a href="#cb95-12" aria-hidden="true" tabindex="-1"></a>        per_label_acc[l] <span class="op">=</span> per_label_acc.get(l, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb95-13"><a href="#cb95-13" aria-hidden="true" tabindex="-1"></a>accs <span class="op">=</span> []</span>
+<span id="cb95-14"><a href="#cb95-14" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> per_label_acc.items():</span>
+<span id="cb95-15"><a href="#cb95-15" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> Counter(result.label_ids)[k]</span>
+<span id="cb95-16"><a href="#cb95-16" aria-hidden="true" tabindex="-1"></a>    accs.append((id2label[k], <span class="bu">round</span>(v<span class="op">/</span>n, <span class="dv">2</span>), n))</span>
+<span id="cb95-17"><a href="#cb95-17" aria-hidden="true" tabindex="-1"></a><span class="bu">sorted</span>(accs, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">2</span>], reverse<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>[('chicken', 1.0, 1811),
+ ('orange', 1.0, 346),
+ ('rice', 0.9970149253731343, 335),
+ ('entrees', 1.0, 204),
+ ('entree', 1.0, 199),
+ ('can', 0.9259259259259259, 162),
+ ('honey', 1.0, 102),
+ ('shrimp', 1.0, 98),
+ ('steak', 1.0, 94),
+ ('drinks', 1.0, 82),
+ ('steamed', 1.0, 70),
+ ('unk', 0.7246376811594203, 69),
+ ('chow', 0.8382352941176471, 68),
+ ('tea', 1.0, 67),
+ ('drink', 1.0, 66),
+ ('plate', 0.8032786885245902, 61),
+ ('side', 1.0, 58),
+ ('mein', 0.9814814814814815, 54),
+ ('beef', 0.8958333333333334, 48),
+ ('lemonade', 1.0, 47),
+ ('bowl', 0.9333333333333333, 45),
+ ('large', 1.0, 41),
+ ('small', 0.9411764705882353, 34),
+ ('one', 0.6451612903225806, 31),
+ ('greens', 1.0, 28),
+ ('two', 0.6538461538461539, 26),
+ ('fried', 0.76, 25),
+ ('medium', 1.0, 24),
+ ('walnut', 0.9090909090909091, 22),
+ ('mushroom', 0.9473684210526315, 19),
+ ('teriyaki', 0.9444444444444444, 18),
+ ('kung', 0.5, 16),
+ ('broccoli', 1.0, 16),
+ ('pao', 0.8571428571428571, 14),
+ ('meal', 0.9285714285714286, 14),
+ ('instead', 1.0, 14),
+ ('pepper', 0.7142857142857143, 14),
+ ('coke', 1.0, 13),
+ ('strawberry', 1.0, 13),
+ ('black', 0.9166666666666666, 12),
+ ('chickens', 1.0, 11),
+ ('bigger', 0.9, 10),
+ ('bowls', 0.8, 10),
+ ('green', 0.8888888888888888, 9),
+ ('veggie', 1.0, 8),
+ ('raspberry', 1.0, 8),
+ ('beijing', 0.875, 8),
+ ('breast', 0.625, 8),
+ ('regular', 0.75, 8),
+ ('milk', 0.625, 8),
+ ('cheese', 0.5, 8),
+ ('egg', 0.875, 8),
+ ('grilled', 0.7142857142857143, 7),
+ ('three', 0.5714285714285714, 7),
+ ('plates', 0.8333333333333334, 6),
+ ('super', 1.0, 6),
+ ('angus', 1.0, 6),
+ ('sides', 1.0, 6),
+ ('white', 0.3333333333333333, 6),
+ ('water', 1.0, 5),
+ ('veggies', 1.0, 5),
+ ('diet', 1.0, 3),
+ ('rangoons', 0.6666666666666666, 3),
+ ('vegetables', 1.0, 2),
+ ('bottle', 1.0, 1)]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> dot</span>
+<span id="cb97-2"><a href="#cb97-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> norm</span>
+<span id="cb97-3"><a href="#cb97-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> spatial</span>
+<span id="cb97-4"><a href="#cb97-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb97-5"><a href="#cb97-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb97-6"><a href="#cb97-6" aria-hidden="true" tabindex="-1"></a>cosine_sim <span class="op">=</span> torch.nn.CosineSimilarity(dim<span class="op">=-</span><span class="dv">1</span>)</span>
+<span id="cb97-7"><a href="#cb97-7" aria-hidden="true" tabindex="-1"></a>similarities <span class="op">=</span> []</span>
+<span id="cb97-8"><a href="#cb97-8" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> ix, emb <span class="kw">in</span> tqdm(<span class="bu">enumerate</span>(result.predictions[<span class="dv">1</span>]), total<span class="op">=</span><span class="bu">len</span>(result.predictions[<span class="dv">1</span>])):</span>
+<span id="cb97-9"><a href="#cb97-9" aria-hidden="true" tabindex="-1"></a>    max_sim <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb97-10"><a href="#cb97-10" aria-hidden="true" tabindex="-1"></a>    max_label <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb97-11"><a href="#cb97-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> jx, emb_2 <span class="kw">in</span> <span class="bu">enumerate</span>(result.predictions[<span class="dv">1</span>]):</span>
+<span id="cb97-12"><a href="#cb97-12" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> ix <span class="op">==</span> jx:</span>
+<span id="cb97-13"><a href="#cb97-13" aria-hidden="true" tabindex="-1"></a>            <span class="cf">continue</span></span>
+<span id="cb97-14"><a href="#cb97-14" aria-hidden="true" tabindex="-1"></a>        <span class="co"># sim = dot(emb, emb_2)/(norm(emb)*norm(emb_2))</span></span>
+<span id="cb97-15"><a href="#cb97-15" aria-hidden="true" tabindex="-1"></a>        sim <span class="op">=</span> <span class="dv">1</span> <span class="op">-</span> spatial.distance.cosine(emb, emb_2)</span>
+<span id="cb97-16"><a href="#cb97-16" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> sim <span class="op">&gt;</span> max_sim:</span>
+<span id="cb97-17"><a href="#cb97-17" aria-hidden="true" tabindex="-1"></a>            max_sim <span class="op">=</span> sim</span>
+<span id="cb97-18"><a href="#cb97-18" aria-hidden="true" tabindex="-1"></a>            max_label <span class="op">=</span> id2label[result.label_ids[jx]]</span>
+<span id="cb97-19"><a href="#cb97-19" aria-hidden="true" tabindex="-1"></a>    l <span class="op">=</span> id2label[result.label_ids[ix]]</span>
+<span id="cb97-20"><a href="#cb97-20" aria-hidden="true" tabindex="-1"></a>    similarities.append((l, max_label))</span>
+<span id="cb97-21"><a href="#cb97-21" aria-hidden="true" tabindex="-1"></a>similarities[:<span class="dv">5</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>100%|██████████| 4648/4648 [14:14&lt;00:00,  5.44it/s]</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>[('water', 'water'),
+ ('water', 'water'),
+ ('water', 'water'),
+ ('small', 'small'),
+ ('small', 'small')]</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="bu">sum</span>([t<span class="op">==</span>p <span class="cf">for</span> t, p <span class="kw">in</span> similarities])<span class="op">/</span><span class="bu">len</span>(similarities)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>0.9677280550774526</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a>per_label_acc <span class="op">=</span> {}</span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t, p <span class="kw">in</span> similarities:</span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> t<span class="op">==</span>p:</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a>        per_label_acc[t] <span class="op">=</span> per_label_acc.get(t, <span class="dv">0</span>) <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>accs <span class="op">=</span> []</span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> k, v <span class="kw">in</span> per_label_acc.items():</span>
+<span id="cb102-7"><a href="#cb102-7" aria-hidden="true" tabindex="-1"></a>    n <span class="op">=</span> Counter(result.label_ids)[label2id[k]]</span>
+<span id="cb102-8"><a href="#cb102-8" aria-hidden="true" tabindex="-1"></a>    accs.append((k, <span class="bu">round</span>(v<span class="op">/</span>n, <span class="dv">2</span>), n))</span>
+<span id="cb102-9"><a href="#cb102-9" aria-hidden="true" tabindex="-1"></a><span class="bu">sorted</span>(accs, key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">2</span>], reverse<span class="op">=</span><span class="va">True</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<pre><code>[('chicken', 1.0, 1811),
+ ('orange', 1.0, 346),
+ ('rice', 0.99, 335),
+ ('entrees', 1.0, 204),
+ ('entree', 1.0, 199),
+ ('can', 0.9, 162),
+ ('honey', 1.0, 102),
+ ('shrimp', 1.0, 98),
+ ('steak', 1.0, 94),
+ ('drinks', 1.0, 82),
+ ('steamed', 1.0, 70),
+ ('unk', 0.64, 69),
+ ('chow', 0.9, 68),
+ ('tea', 1.0, 67),
+ ('drink', 1.0, 66),
+ ('plate', 0.84, 61),
+ ('side', 1.0, 58),
+ ('mein', 0.94, 54),
+ ('beef', 0.88, 48),
+ ('lemonade', 1.0, 47),
+ ('bowl', 0.93, 45),
+ ('large', 1.0, 41),
+ ('small', 0.94, 34),
+ ('one', 0.61, 31),
+ ('greens', 0.96, 28),
+ ('two', 0.73, 26),
+ ('fried', 0.8, 25),
+ ('medium', 0.96, 24),
+ ('walnut', 0.91, 22),
+ ('mushroom', 0.89, 19),
+ ('teriyaki', 0.94, 18),
+ ('kung', 0.56, 16),
+ ('broccoli', 1.0, 16),
+ ('pao', 0.86, 14),
+ ('meal', 0.93, 14),
+ ('instead', 1.0, 14),
+ ('pepper', 0.71, 14),
+ ('coke', 1.0, 13),
+ ('strawberry', 1.0, 13),
+ ('black', 0.92, 12),
+ ('chickens', 1.0, 11),
+ ('bigger', 0.9, 10),
+ ('bowls', 0.8, 10),
+ ('green', 0.78, 9),
+ ('veggie', 1.0, 8),
+ ('raspberry', 1.0, 8),
+ ('beijing', 0.88, 8),
+ ('breast', 0.88, 8),
+ ('regular', 0.88, 8),
+ ('milk', 1.0, 8),
+ ('cheese', 0.62, 8),
+ ('egg', 0.88, 8),
+ ('grilled', 0.71, 7),
+ ('three', 0.57, 7),
+ ('plates', 1.0, 6),
+ ('super', 1.0, 6),
+ ('angus', 1.0, 6),
+ ('sides', 0.83, 6),
+ ('white', 0.17, 6),
+ ('water', 1.0, 5),
+ ('veggies', 0.8, 5),
+ ('diet', 1.0, 3),
+ ('rangoons', 0.33, 3),
+ ('vegetables', 1.0, 2)]</code></pre>
+</div>
+</div>
+
+
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    setTimeout(function() {
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
