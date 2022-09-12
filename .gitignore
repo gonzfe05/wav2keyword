@@ -169,3 +169,5 @@ data/panda/pd-112705.zip
 data/panda/selected.zip
 data/panda/results
 data/panda/tags_data.json
+test/*.wav
+data/panda/selected
