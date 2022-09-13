@@ -2,19 +2,11 @@ website:
   sidebar:
     contents:
       - index.ipynb
-      - 00_datasets.ipynb
+      - 00_core.ipynb
+      - 00_datasets_tools.ipynb
       - 01_preprocesses.ipynb
       - 02_training.ipynb
-      - 03_inference.ipynb
       - 05_one_vs_rest.ipynb
       - 06_embeddings_distance.ipynb
-      - section: _docs
-        contents:
-          - _docs/index.html
-          - _docs/04_multilabel.html
-          - _docs/05_one_vs_rest.html
-          - _docs/06_embeddings_distance.html
-          - _docs/datasets.html
-          - _docs/inference.html
-          - _docs/preprocesses.html
-          - _docs/training.html
+      - 07_audio_processor.ipynb
+      - 08_xvector_embeddings.ipynb

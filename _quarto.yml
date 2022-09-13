@@ -20,7 +20,6 @@ website:
   description: "A module to spot keywords from audio based on wav2vec"
   twitter-card: true
   open-graph: true
-  reader-mode: true
   repo-branch: master
   repo-url: "https://github.com/gonzfe05/wav2keyword"
   repo-actions: [issue]
