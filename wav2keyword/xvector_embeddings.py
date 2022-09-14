@@ -3,7 +3,7 @@
 # %% auto 0
 __all__ = ['AudioArray', 'XvectorModel']
 
-# %% ../08_xvector_embeddings.ipynb 2
+# %% ../08_xvector_embeddings.ipynb 3
 from transformers import Wav2Vec2ForXVector
 from .audio_processor import AudioProcessor
 from pydantic import BaseModel
@@ -20,13 +20,15 @@ class AudioArray(BaseModel):
 
 class XvectorModel(object):
 
-    def __init__(self, model_checkpoint: str) -> None:
+    def __init__(self, model_checkpoint: str, annoy_index_path: str = None) -> None:
         self.model_checkpoint = model_checkpoint
         self.model = Wav2Vec2ForXVector.from_pretrained(self.model_checkpoint)
         self.audio_processor = AudioProcessor(self.model_checkpoint)
+        self.embeddings_dimention = 512
+        self.annoy_handler = AnnoyHandler(self.embeddings_dimention, annoy_index_path)
     
-    def prepare_data(self, raw_data: bytes, sample_width: int, channels: int, frame_rate: int):
-        return self.audio_processor.encode_data(raw_data, sample_width, channels, frame_rate)
+    def prepare_raw_audio(self, raw_data: bytes, sample_width: int, channels: int, frame_rate: int):
+        return self.audio_processor.encode_raw_audio(raw_data, sample_width, channels, frame_rate)
     
     def get_embeddings(self, inputs):
         with torch.no_grad():

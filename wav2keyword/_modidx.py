@@ -69,5 +69,5 @@ d = { 'settings': { 'branch': 'master',
                                                                                                                 'wav2keyword/xvector_embeddings.py'),
                                                 'wav2keyword.xvector_embeddings.XvectorModel.get_predicted_labels': ( 'xvector_embeddings.html#get_predicted_labels',
                                                                                                                       'wav2keyword/xvector_embeddings.py'),
-                                                'wav2keyword.xvector_embeddings.XvectorModel.prepare_data': ( 'xvector_embeddings.html#prepare_data',
-                                                                                                              'wav2keyword/xvector_embeddings.py')}}}
+                                                'wav2keyword.xvector_embeddings.XvectorModel.prepare_raw_audio': ( 'xvector_embeddings.html#prepare_raw_audio',
+                                                                                                                   'wav2keyword/xvector_embeddings.py')}}}
